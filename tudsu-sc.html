@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TU Dublin Student Council Meeting Dashboard</title>
+<style type="text/css">
+    html, body{
+        height: 100%;
+        font-family: 'Nunito Sans', sans-serif!important
+    }
+    body {
+        margin: 0px;
+        background: #EC008C;
+    }
+    .top {
+        height: 80%
+    }
+    .bottom {
+        width: 100%;
+        background: #00286E;
+        color: #EEE;
+    }
+    .sidebar {
+        float: left;
+        width: 20%;
+        height: 100%;
+        background: #EC008C;
+
+        align-content: center;
+        text-align: center;
+    }
+    .presentation {
+        background: #FFF;
+        float: right;
+        width: 80%;
+        height:100%;
+    }
+    .sidebar img {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 50px;
+    }
+
+    .speaker {
+        height: 100%;
+        width: 20%;
+        float: left;
+        display: block;
+    }
+
+    .timer {
+        height: 50%;
+        margin: 15px;
+
+        float: right;
+        display: block;
+    }
+
+    .bottom::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+
+    #video {
+        width: 100%;
+        height: 100%;
+    }
+    #start, #stop{
+        width: 15px;
+        float: left;
+        display: block;
+    }
+    .controls {
+        float: left;
+        fill: #FFF
+    }
+
+    .controls svg {
+        margin-left: 5px;
+        margin-right: 5px;
+        display: block;
+    }
+
+    .timer {
+        float: right;
+    }
+
+    .timer-controls {
+        float: right;
+        fill: #FFF;
+        padding-top: 30px;
+        width: 30px;
+    }
+
+    .timer-controls svg {
+        margin: 5px;
+        display: block;
+    }
+
+    .timer-controls svg:hover {
+        fill: #DDD;
+    }
+
+
+.base-timer {
+  position: relative;
+  width: 250px;
+  height: 250px;
+}
+
+.base-timer__svg {
+  transform: scaleX(-1);
+}
+
+.base-timer__circle {
+  fill: none;
+  stroke: none;
+}
+
+.base-timer__path-elapsed {
+  stroke-width: 7px;
+  stroke: grey;
+}
+
+.base-timer__path-remaining {
+  stroke-width: 7px;
+  stroke-linecap: round;
+  transform: rotate(90deg);
+  transform-origin: center;
+  transition: 1s linear all;
+  fill-rule: nonzero;
+  stroke: currentColor;
+}
+
+.base-timer__path-remaining.green {
+  color: rgb(65, 184, 131);
+}
+
+.base-timer__path-remaining.orange {
+  color: orange;
+}
+
+.base-timer__path-remaining.red {
+  color: red;
+}
+
+.base-timer__label {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+}
+
+
+</style>
+</head>
+<body>
+<div class="top">
+    <div class="sidebar">
+        <img src="https://www.tudublinsu.ie/stylesheet/template/logo.png">
+        <h1>TU Dublin Students Union</h1>
+        <h2 contenteditable="true">Student Council</h2>
+        <h3 contenteditable="true">5 May 2021</h3>
+    </div>
+    <div class="presentation">
+        <iframe id="pres" src="https://docs.google.com/presentation/d/e/2PACX-1vQaxUhGJJ7VOE5B0BIhYrfodLv35q516UrYqbceertXM9S995rAm-Z8Kbq26u3oDzAxD5wDmZDd4RAg/embed?start=false&loop=false&delayms=3000" frameborder="0" width="100%" height="100%" allowfullscreen="false" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+    </div>
+</div>
+<div class="bottom">
+    <div class="speaker">
+        <video id="video" autoplay></video>
+    </div>
+    <div class="controls">
+        <svg id="start" xmlns="http://www.w3.org/2000/svg" id="Layer_1" x="0" y="0" version="1.1" viewBox="0 0 29 29" xml:space="preserve">
+            <path d="M25 25.25H4c-1.654 0-3-1.346-3-3v-12c0-1.654 1.346-3 3-3h3.279l.316-.949a2.997 2.997 0 0 1 2.846-2.051h8.117c1.293 0 2.437.824 2.846 2.051l.316.949H25c1.654 0 3 1.346 3 3v12c0 1.654-1.346 3-3 3zm-21-16a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h21a1 1 0 0 0 1-1v-12a1 1 0 0 0-1-1h-3.279c-.862 0-1.625-.55-1.897-1.368l-.315-.948a1.001 1.001 0 0 0-.949-.684h-8.117a.998.998 0 0 0-.949.684l-.318.949A1.996 1.996 0 0 1 7.279 9.25H4z"/><path d="M14.5 22.25c-3.032 0-5.5-2.468-5.5-5.5s2.468-5.5 5.5-5.5 5.5 2.468 5.5 5.5-2.468 5.5-5.5 5.5zm0-9c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5z"/><circle cx="20.5" cy="11.25" r="1"/><path d="M5.5 4.75H4a.5.5 0 0 0 0 1h1.5a.5.5 0 0 0 0-1z"/><path d="M5.5 6.25H4a1 1 0 0 1 0-2h1.5a1 1 0 0 1 0 2zm-1.5-1h1.5H4z"/>
+        </svg>
+        <svg id="stop" xmlns="http://www.w3.org/2000/svg" id="Layer_1" x="0" y="0" version="1.1" viewBox="0 0 29 29" xml:space="preserve">
+            <path d="M14.637 27.065a12.457 12.457 0 0 1-8.838-3.655c-4.874-4.874-4.874-12.804 0-17.678a12.419 12.419 0 0 1 8.839-3.662c3.339 0 6.478 1.3 8.838 3.662 2.361 2.361 3.662 5.5 3.662 8.839s-1.3 6.478-3.662 8.839a12.46 12.46 0 0 1-8.839 3.655zm.001-22.995a10.428 10.428 0 0 0-7.425 3.076c-1.983 1.983-3.075 4.62-3.075 7.425s1.092 5.441 3.075 7.425c4.094 4.094 10.756 4.095 14.849 0 1.983-1.983 3.076-4.62 3.076-7.425s-1.092-5.441-3.076-7.425a10.432 10.432 0 0 0-7.424-3.076z"/><path d="M10.395 19.813a.999.999 0 0 1-.707-1.707l8.485-8.485a.999.999 0 1 1 1.414 1.414l-8.485 8.485a.993.993 0 0 1-.707.293z"/><path d="M18.88 19.813a.997.997 0 0 1-.707-.293l-8.485-8.485a.999.999 0 1 1 1.414-1.414l8.485 8.485a.999.999 0 0 1-.707 1.707z"/>
+        </svg>
+        <details>
+            <summary>Presentation URL</summary>
+            <input type="text" name="presURL" id="presURL" placeholder="https://docs.google.com/presentation/d/e/2PACX-1vQaxUhGJJ7VOE5B0BIhYrfodLv35q516UrYqbceertXM9S995rAm-Z8Kbq26u3oDzAxD5wDmZDd4RAg/">
+            <button id="updatePres">Update</button>
+        </details>
+    </div>
+    <div class="timer-controls">
+        <svg id="timer-start" xmlns="http://www.w3.org/2000/svg" id="Layer_1" x="0" y="0" version="1.1" viewBox="0 0 29 29" xml:space="preserve"><path d="M23.273 6.553a.997.997 0 01-.707-.293 10.388 10.388 0 00-2.137-1.639 1 1 0 111-1.732 12.299 12.299 0 012.55 1.957.999.999 0 01-.706 1.707zM14.5 5a1 1 0 01-1-1V2.5a1 1 0 012 0V4a1 1 0 01-1 1zM14.5 19a1 1 0 01-1-1V8a1 1 0 012 0v10a1 1 0 01-1 1z"/><path d="M14.5 28C7.607 28 2 22.393 2 15.5S7.607 3 14.5 3 27 8.607 27 15.5 21.393 28 14.5 28zm0-23C8.71 5 4 9.71 4 15.5S8.71 26 14.5 26 25 21.29 25 15.5 20.29 5 14.5 5z"/><circle cx="14.5" cy="15.5" r="2"/></svg>
+        <svg id="timer-stop" xmlns="http://www.w3.org/2000/svg" id="Layer_1" x="0" y="0" version="1.1" viewBox="0 0 29 29" xml:space="preserve">
+            <path d="M14.637 27.065a12.457 12.457 0 0 1-8.838-3.655c-4.874-4.874-4.874-12.804 0-17.678a12.419 12.419 0 0 1 8.839-3.662c3.339 0 6.478 1.3 8.838 3.662 2.361 2.361 3.662 5.5 3.662 8.839s-1.3 6.478-3.662 8.839a12.46 12.46 0 0 1-8.839 3.655zm.001-22.995a10.428 10.428 0 0 0-7.425 3.076c-1.983 1.983-3.075 4.62-3.075 7.425s1.092 5.441 3.075 7.425c4.094 4.094 10.756 4.095 14.849 0 1.983-1.983 3.076-4.62 3.076-7.425s-1.092-5.441-3.076-7.425a10.432 10.432 0 0 0-7.424-3.076z"/><path d="M10.395 19.813a.999.999 0 0 1-.707-1.707l8.485-8.485a.999.999 0 1 1 1.414 1.414l-8.485 8.485a.993.993 0 0 1-.707.293z"/><path d="M18.88 19.813a.997.997 0 0 1-.707-.293l-8.485-8.485a.999.999 0 1 1 1.414-1.414l8.485 8.485a.999.999 0 0 1-.707 1.707z"/>
+        </svg>
+        <!-- <p>Timer</p> -->
+    </div>
+    <div class="timer">
+        <div id="app"></div>
+        <span contenteditable="true" id="base-timer-label" class="base-timer__label"></span>
+    </div>
+</div>
+
+<script>
+const videoElem = document.getElementById("video");
+const startElem = document.getElementById("start");
+const stopElem = document.getElementById("stop");
+const urlElem = document.getElementById("presURL");
+const presUpdateElem = document.getElementById("updatePres");
+const timerStartElem = document.getElementById("timer-start");
+const timerStopElem = document.getElementById("timer-stop");
+
+
+// Options for getDisplayMedia()
+
+var displayMediaOptions = {
+  video: {
+    cursor: "always"
+  },
+  audio: false
+};
+timerStartElem.addEventListener("click", function(evt) {
+  startTimer();
+}, false);
+timerStopElem.addEventListener("click", function(evt) {
+  RUNNING = false;
+  clearInterval(timerInterval);
+}, false);
+presUpdateElem.addEventListener("click", function(evt){
+    document.getElementById("pres").src = urlElem.value + "/embed"
+}, false);
+// Set event listeners for the start and stop buttons
+startElem.addEventListener("click", function(evt) {
+  startCapture();
+}, false);
+
+stopElem.addEventListener("click", function(evt) {
+  stopCapture();
+}, false);
+async function startCapture() {
+  try {
+    videoElem.srcObject = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions);
+    dumpOptionsInfo();
+  } catch(err) {
+    console.error("Error: " + err);
+  }
+}
+function stopCapture(evt) {
+  let tracks = videoElem.srcObject.getTracks();
+
+  tracks.forEach(track => track.stop());
+  videoElem.srcObject = null;
+}
+function dumpOptionsInfo() {
+  const videoTrack = videoElem.srcObject.getVideoTracks()[0];
+
+  console.info("Track settings:");
+  console.info(JSON.stringify(videoTrack.getSettings(), null, 2));
+  console.info("Track constraints:");
+  console.info(JSON.stringify(videoTrack.getConstraints(), null, 2));
+}
+
+// Credit: Mateusz Rybczonec
+
+const FULL_DASH_ARRAY = 283;
+const WARNING_THRESHOLD = 10;
+const ALERT_THRESHOLD = 5;
+RUNNING = false;
+
+const COLOR_CODES = {
+  info: {
+    color: "green"
+  },
+  warning: {
+    color: "orange",
+    threshold: WARNING_THRESHOLD
+  },
+  alert: {
+    color: "red",
+    threshold: ALERT_THRESHOLD
+  }
+};
+
+TIME_LIMIT = 60;
+let timePassed = 0;
+let timeLeft = TIME_LIMIT;
+let timerInterval = null;
+let remainingPathColor = COLOR_CODES.info.color;
+
+document.getElementById("app").innerHTML = `
+<div class="base-timer">
+  <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <g class="base-timer__circle">
+      <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
+      <path
+        id="base-timer-path-remaining"
+        stroke-dasharray="283"
+        class="base-timer__path-remaining ${remainingPathColor}"
+        d="
+          M 50, 50
+          m -45, 0
+          a 45,45 0 1,0 90,0
+          a 45,45 0 1,0 -90,0
+        "
+      ></path>
+    </g>
+  </svg>
+  <span contenteditable="true" id="base-timer-label" class="base-timer__label">${formatTime(
+    timeLeft
+  )}</span>
+</div>
+`;
+
+
+
+function onTimesUp() {
+  clearInterval(timerInterval);
+  RUNNING = false
+}
+
+function startTimer() {
+  if (!RUNNING) {
+      TIME_LIMIT = document.getElementById("base-timer-label").innerHTML
+      timePassed = 0
+      RUNNING = true
+      timerInterval = setInterval(() => {
+        timePassed = timePassed += 1;
+        timeLeft = TIME_LIMIT - timePassed;
+        document.getElementById("base-timer-label").innerHTML = formatTime(
+          timeLeft
+        );
+        setCircleDasharray();
+        setRemainingPathColor(timeLeft);
+
+        if (timeLeft === 0) {
+          onTimesUp();
+        }
+      }, 1000);
+    }
+}
+
+document.querySelector('#base-timer-label').addEventListener('keypress', function (e) {
+    var key = e.which || e.keyCode;
+    if (key === 13 || key === 50) { // 13 is enter
+        startTimer()
+    }
+});
+
+function formatTime(time) {
+  const minutes = Math.floor(time / 60);
+  let seconds = time % 60;
+
+  if (seconds < 10) {
+    seconds = `0${seconds}`;
+  }
+
+  return `${minutes}:${seconds}`;
+}
+
+function setRemainingPathColor(timeLeft) {
+  const { alert, warning, info } = COLOR_CODES;
+  if (timeLeft <= alert.threshold) {
+    document
+      .getElementById("base-timer-path-remaining")
+      .classList.remove(warning.color);
+    document
+      .getElementById("base-timer-path-remaining")
+      .classList.add(alert.color);
+  } else if (timeLeft <= warning.threshold) {
+    document
+      .getElementById("base-timer-path-remaining")
+      .classList.remove(info.color);
+    document
+      .getElementById("base-timer-path-remaining")
+      .classList.add(warning.color);
+  } else {
+    document
+      .getElementById("base-timer-path-remaining")
+      .classList.remove(warning.color);
+    document
+      .getElementById("base-timer-path-remaining")
+      .classList.remove(alert.color);
+    document
+      .getElementById("base-timer-path-remaining")
+      .classList.add(info.color);
+  }
+}
+
+function calculateTimeFraction() {
+  const rawTimeFraction = timeLeft / TIME_LIMIT;
+  return rawTimeFraction - (1 / TIME_LIMIT) * (1 - rawTimeFraction);
+}
+
+function setCircleDasharray() {
+  const circleDasharray = `${(
+    calculateTimeFraction() * FULL_DASH_ARRAY
+  ).toFixed(0)} 283`;
+  document
+    .getElementById("base-timer-path-remaining")
+    .setAttribute("stroke-dasharray", circleDasharray);
+}
+
+
+</script>
+
+</body>
+</html>
